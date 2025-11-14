@@ -6,28 +6,24 @@ public class Ponte {
     private int carrosNaPonte = 0;
     private Sentido sentidoAtual = Sentido.NENHUM;
 
-    // Semáforo binário para controle do acesso às variáveis de estado
     private final Semaphore mutex = new Semaphore(1);
 
-    // Semáforos para gerenciar o controle de filas (bloqueio de carros)
+    // Semáforos para gerenciar o controle de filas
     private final Semaphore filaNorte = new Semaphore(0);
     private final Semaphore filaSul = new Semaphore(0);
 
-    // Contadores para o número de carros esperando em cada fila
     private int esperandoNorte = 0;
     private int esperandoSul = 0;
 
     public void entrarNaPonte(Carro carro) throws InterruptedException {
-        mutex.acquire(); // Inicia a exclusão mútua para acessar as variáveis de estado
+        mutex.acquire(); // Inicia omutex pra variáveis de estado
 
         try {
             // Verifica se a ponte está vazia ou se o carro pode entrar
             if (carrosNaPonte == 0) {
-                // A ponte está vazia, então o carro define o sentido
                 sentidoAtual = carro.getSentido();
                 System.out.println(carro + " entrou e definiu o sentido " + sentidoAtual);
             } else {
-                // Caso contrário, bloqueia o carro se o sentido for diferente
                 if (sentidoAtual != carro.getSentido()) {
                     if (carro.getSentido() == Sentido.NORTE_SUL) {
                         esperandoNorte++;
@@ -40,7 +36,7 @@ public class Ponte {
                     } else {
                         filaSul.acquire(); // Carro na fila sul aguarda
                     }
-                    mutex.acquire(); // Retoma a exclusão mútua ao ser acordado
+                    mutex.acquire(); // Retoma o mutex ao ser acordado
                 }
             }
 
@@ -56,10 +52,10 @@ public class Ponte {
     }
 
     public void sairDaPonte(Carro carro) throws InterruptedException {
-        mutex.acquire(); // Inicia a exclusão mútua para acessar as variáveis de estado
+        mutex.acquire(); 
 
         try {
-            // Atualiza o número de carros na ponte
+         
             carrosNaPonte--;
             System.out.println("<<< [SAIDA] " + carro + " saiu da ponte. Restantes: " + carrosNaPonte);
 
@@ -70,12 +66,12 @@ public class Ponte {
                 } else if (esperandoNorte > 0) {
                     filaNorte.release(); // Libera um carro na fila norte
                 } else {
-                    sentidoAtual = Sentido.NENHUM; // Se não houver carros esperando, a ponte fica vazia
+                    sentidoAtual = Sentido.NENHUM;
                     System.out.println("--- PONTE VAZIA ---");
                 }
             }
         } finally {
-            mutex.release(); // Libera o mutex após manipular o estado
+            mutex.release();
         }
     }
 

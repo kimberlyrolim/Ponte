@@ -16,17 +16,14 @@ public class Carro extends Thread {
     @Override
     public void run() {
         try {
-            // 1. Simula um tempo variável até o carro chegar na ponte
             Thread.sleep(random.nextInt(10000));
 
-            // 2. Tenta entrar na ponte (método crítico)
             System.out.println(this + " querendo entrar no sentido " + this.sentido);
             ponte.entrarNaPonte(this);
 
-            // 3. Simula o tempo de travessia da ponte
+            //tempo de travessia da ponte
             Thread.sleep(3000 + random.nextInt(3000));
 
-            // 4. Sai da ponte (método crítico)
             ponte.sairDaPonte(this);
 
         } catch (InterruptedException e) {

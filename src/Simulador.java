@@ -4,7 +4,7 @@ import java.util.Random;
 public class Simulador {
 
     public static void main(String[] args) {
-        final int TOTAL_CARROS = 20; // Número total de carros na simulação
+        final int TOTAL_CARROS = 20; 
         Ponte ponte = new Ponte();
         Random random = new Random();
 
