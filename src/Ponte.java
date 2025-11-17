@@ -8,7 +8,6 @@ public class Ponte {
 
     private final Semaphore mutex = new Semaphore(1);
 
-    // Semáforos para gerenciar o controle de filas
     private final Semaphore filaNorte = new Semaphore(0);
     private final Semaphore filaSul = new Semaphore(0);
 
@@ -19,7 +18,7 @@ public class Ponte {
         mutex.acquire(); // Inicia omutex pra variáveis de estado
 
         try {
-            // Verifica se a ponte está vazia ou se o carro pode entrar
+            // Verifica se a ponte ta vazia se o carro pode entrar
             if (carrosNaPonte == 0) {
                 sentidoAtual = carro.getSentido();
                 System.out.println(carro + " entrou e definiu o sentido " + sentidoAtual);
@@ -40,7 +39,7 @@ public class Ponte {
                 }
             }
 
-            // Verifica se a capacidade máxima foi atingida
+            // Verifica se a capacidade maxima foi atingida
             if (carrosNaPonte < CAPACIDADE_MAXIMA) {
                 carrosNaPonte++;
                 System.out.println(">>> [ENTRADA] " + carro + " entrou na ponte. Sentido: " + sentidoAtual + ". Total: " + carrosNaPonte);
